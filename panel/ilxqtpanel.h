@@ -31,11 +31,11 @@
 #include <QRect>
 #include "lxqtpanelglobals.h"
 
-class ILxQtPanelPlugin;
+class ILXQtPanelPlugin;
 
 /**
  **/
-class LXQT_PANEL_API ILxQtPanel
+class LXQT_PANEL_API ILXQtPanel
 {
 public:
     /**
@@ -72,7 +72,7 @@ public:
      Helper functions for calculating global screen position of some popup window with windowSize size.
      If you need to show some popup window, you can use it, to get global screen position for the new window.
      **/
-    virtual QRect calculatePopupWindowPos(const ILxQtPanelPlugin *plugin, const QSize &windowSize) const = 0;
+    virtual QRect calculatePopupWindowPos(const ILXQtPanelPlugin *plugin, const QSize &windowSize) const = 0;
 };
 
 #endif // ILXQTPANEL_H

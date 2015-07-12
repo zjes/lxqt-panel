@@ -38,12 +38,12 @@
 #include <QResizeEvent>
 #include <QVBoxLayout>
 
-LxQtSysStat::LxQtSysStat(const ILxQtPanelPluginStartupInfo &startupInfo):
+LXQtSysStat::LXQtSysStat(const ILXQtPanelPluginStartupInfo &startupInfo):
     QObject(),
-    ILxQtPanelPlugin(startupInfo),
+    ILXQtPanelPlugin(startupInfo),
     mWidget(new QWidget()),
-    mFakeTitle(new LxQtSysStatTitle(mWidget)),
-    mContent(new LxQtSysStatContent(this, mWidget))
+    mFakeTitle(new LXQtSysStatTitle(mWidget)),
+    mContent(new LXQtSysStatContent(this, mWidget))
 {
     QVBoxLayout *borderLayout = new QVBoxLayout(mWidget);
     borderLayout->setContentsMargins(0, 0, 0, 0);
@@ -60,24 +60,24 @@ LxQtSysStat::LxQtSysStat(const ILxQtPanelPluginStartupInfo &startupInfo):
     QTimer::singleShot(0, this, SLOT(lateInit()));
 }
 
-LxQtSysStat::~LxQtSysStat()
+LXQtSysStat::~LXQtSysStat()
 {
     delete mWidget;
 }
 
-void LxQtSysStat::lateInit()
+void LXQtSysStat::lateInit()
 {
     settingsChanged();
     mContent->setTitleFont(mFakeTitle->font());
     mSize = mContent->size();
 }
 
-QDialog *LxQtSysStat::configureDialog()
+QDialog *LXQtSysStat::configureDialog()
 {
-    return new LxQtSysStatConfiguration(settings());
+    return new LXQtSysStatConfiguration(settings());
 }
 
-void LxQtSysStat::realign()
+void LXQtSysStat::realign()
 {
     QSize newSize = mContent->size();
     if (mSize != newSize)
@@ -87,23 +87,23 @@ void LxQtSysStat::realign()
     }
 }
 
-void LxQtSysStat::settingsChanged()
+void LXQtSysStat::settingsChanged()
 {
     mContent->updateSettings(settings());
 }
 
-LxQtSysStatTitle::LxQtSysStatTitle(QWidget *parent):
+LXQtSysStatTitle::LXQtSysStatTitle(QWidget *parent):
     QLabel(parent)
 {
 
 }
 
-LxQtSysStatTitle::~LxQtSysStatTitle()
+LXQtSysStatTitle::~LXQtSysStatTitle()
 {
 
 }
 
-bool LxQtSysStatTitle::event(QEvent *e)
+bool LXQtSysStatTitle::event(QEvent *e)
 {
     if (e->type() == QEvent::FontChange)
         emit fontChanged(font());
@@ -111,7 +111,7 @@ bool LxQtSysStatTitle::event(QEvent *e)
     return QLabel::event(e);
 }
 
-LxQtSysStatContent::LxQtSysStatContent(ILxQtPanelPlugin *plugin, QWidget *parent):
+LXQtSysStatContent::LXQtSysStatContent(ILXQtPanelPlugin *plugin, QWidget *parent):
     QWidget(parent),
     mPlugin(plugin),
     mStat(NULL),
@@ -124,7 +124,7 @@ LxQtSysStatContent::LxQtSysStatContent(ILxQtPanelPlugin *plugin, QWidget *parent
     setObjectName("SysStat_Graph");
 }
 
-LxQtSysStatContent::~LxQtSysStatContent()
+LXQtSysStatContent::~LXQtSysStatContent()
 {
 }
 
@@ -133,7 +133,7 @@ LxQtSysStatContent::~LxQtSysStatContent()
 
 #undef QSS_GET_COLOUR
 #define QSS_GET_COLOUR(GETNAME) \
-QColor LxQtSysStatContent::GETNAME##Colour() const \
+QColor LXQtSysStatContent::GETNAME##Colour() const \
 { \
     return mThemeColours.GETNAME##Colour; \
 }
@@ -141,7 +141,7 @@ QColor LxQtSysStatContent::GETNAME##Colour() const \
 #undef QSS_COLOUR
 #define QSS_COLOUR(GETNAME, SETNAME) \
 QSS_GET_COLOUR(GETNAME) \
-void LxQtSysStatContent::SETNAME##Colour(QColor value) \
+void LXQtSysStatContent::SETNAME##Colour(QColor value) \
 { \
     mThemeColours.GETNAME##Colour = value; \
     if (mUseThemeColours) \
@@ -151,7 +151,7 @@ void LxQtSysStatContent::SETNAME##Colour(QColor value) \
 #undef QSS_NET_COLOUR
 #define QSS_NET_COLOUR(GETNAME, SETNAME) \
 QSS_GET_COLOUR(GETNAME) \
-void LxQtSysStatContent::SETNAME##Colour(QColor value) \
+void LXQtSysStatContent::SETNAME##Colour(QColor value) \
 { \
     mThemeColours.GETNAME##Colour = value; \
     if (mUseThemeColours) \
@@ -180,7 +180,7 @@ QSS_NET_COLOUR(netTransmitted, setNetTransmitted)
 #undef QSS_COLOUR
 #undef QSS_GET_COLOUR
 
-void LxQtSysStatContent::mixNetColours()
+void LXQtSysStatContent::mixNetColours()
 {
     QColor netReceivedColour_hsv = mColours.netReceivedColour.toHsv();
     QColor netTransmittedColour_hsv = mColours.netTransmittedColour.toHsv();
@@ -193,7 +193,7 @@ void LxQtSysStatContent::mixNetColours()
         (netReceivedColour_hsv.valueF()      + netTransmittedColour_hsv.valueF()     ) / 2 );
 }
 
-void LxQtSysStatContent::setTitleFont(QFont value)
+void LXQtSysStatContent::setTitleFont(QFont value)
 {
     mTitleFont = value;
     updateTitleFontPixelHeight();
@@ -201,7 +201,7 @@ void LxQtSysStatContent::setTitleFont(QFont value)
     update();
 }
 
-void LxQtSysStatContent::updateTitleFontPixelHeight()
+void LXQtSysStatContent::updateTitleFontPixelHeight()
 {
     if (mTitleLabel.isEmpty())
         mTitleFontPixelHeight = 0;
@@ -212,7 +212,7 @@ void LxQtSysStatContent::updateTitleFontPixelHeight()
     }
 }
 
-void LxQtSysStatContent::updateSettings(const QSettings *settings)
+void LXQtSysStatContent::updateSettings(const QSettings *settings)
 {
     double old_updateInterval = mUpdateInterval;
     int old_minimalSize = mMinimalSize;
@@ -352,12 +352,12 @@ void LxQtSysStatContent::updateSettings(const QSettings *settings)
         update();
 }
 
-void LxQtSysStatContent::resizeEvent(QResizeEvent * /*event*/)
+void LXQtSysStatContent::resizeEvent(QResizeEvent * /*event*/)
 {
     reset();
 }
 
-void LxQtSysStatContent::reset()
+void LXQtSysStatContent::reset()
 {
     setMinimumSize(mPlugin->panel()->isHorizontal() ? mMinimalSize : 2,
                    mPlugin->panel()->isHorizontal() ? 2 : mMinimalSize);
@@ -375,14 +375,14 @@ T clamp(const T &value, const T &min, const T &max)
 }
 
 // QPainter.drawLine with pen set to Qt::transparent doesn't clear anything
-void LxQtSysStatContent::clearLine()
+void LXQtSysStatContent::clearLine()
 {
     QRgb bg = QColor(Qt::transparent).rgba();
     for (int i = 0; i < 100; ++i)
         reinterpret_cast<QRgb*>(mHistoryImage.scanLine(i))[mHistoryOffset] = bg;
 }
 
-void LxQtSysStatContent::cpuUpdate(float user, float nice, float system, float other, float frequencyRate, uint)
+void LXQtSysStatContent::cpuUpdate(float user, float nice, float system, float other, float frequencyRate, uint)
 {
     int y_system = clamp(static_cast<int>(system * 100.0 * frequencyRate)           , 0, 99);
     int y_user   = clamp(static_cast<int>(user   * 100.0 * frequencyRate) + y_system, 0, 99);
@@ -423,7 +423,7 @@ void LxQtSysStatContent::cpuUpdate(float user, float nice, float system, float o
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
-void LxQtSysStatContent::cpuUpdate(float user, float nice, float system, float other)
+void LXQtSysStatContent::cpuUpdate(float user, float nice, float system, float other)
 {
     int y_system = clamp(static_cast<int>(system * 100.0)           , 0, 99);
     int y_user   = clamp(static_cast<int>(user   * 100.0) + y_system, 0, 99);
@@ -458,7 +458,7 @@ void LxQtSysStatContent::cpuUpdate(float user, float nice, float system, float o
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
-void LxQtSysStatContent::memoryUpdate(float apps, float buffers, float cached)
+void LXQtSysStatContent::memoryUpdate(float apps, float buffers, float cached)
 {
     int y_apps    = clamp(static_cast<int>(apps    * 100.0)            , 0, 99);
     int y_buffers = clamp(static_cast<int>(buffers * 100.0) + y_apps   , 0, 99);
@@ -487,7 +487,7 @@ void LxQtSysStatContent::memoryUpdate(float apps, float buffers, float cached)
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
-void LxQtSysStatContent::swapUpdate(float used)
+void LXQtSysStatContent::swapUpdate(float used)
 {
     int y_used = clamp(static_cast<int>(used * 100.0), 0, 99);
 
@@ -504,7 +504,7 @@ void LxQtSysStatContent::swapUpdate(float used)
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
-void LxQtSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
+void LXQtSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
 {
     qreal min_value = qMin(qMax(static_cast<qreal>(qMin(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
     qreal max_value = qMin(qMax(static_cast<qreal>(qMax(received, transmitted)) / mNetRealMaximumSpeed, static_cast<qreal>(0.0)), static_cast<qreal>(1.0));
@@ -535,7 +535,7 @@ void LxQtSysStatContent::networkUpdate(unsigned received, unsigned transmitted)
     update(0, mTitleFontPixelHeight, width(), height() - mTitleFontPixelHeight);
 }
 
-void LxQtSysStatContent::paintEvent(QPaintEvent *event)
+void LXQtSysStatContent::paintEvent(QPaintEvent *event)
 {
     QPainter p(this);
 

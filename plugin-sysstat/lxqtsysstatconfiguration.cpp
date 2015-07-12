@@ -36,9 +36,9 @@
 #include <SysStat/NetStat>
 
 
-LxQtSysStatConfiguration::LxQtSysStatConfiguration(QSettings *settings, QWidget *parent) :
+LXQtSysStatConfiguration::LXQtSysStatConfiguration(QSettings *settings, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::LxQtSysStatConfiguration),
+    ui(new Ui::LXQtSysStatConfiguration),
     mSettings(settings),
     oldSettings(settings),
     mStat(NULL),
@@ -53,12 +53,12 @@ LxQtSysStatConfiguration::LxQtSysStatConfiguration(QSettings *settings, QWidget 
     loadSettings();
 }
 
-LxQtSysStatConfiguration::~LxQtSysStatConfiguration()
+LXQtSysStatConfiguration::~LXQtSysStatConfiguration()
 {
     delete ui;
 }
 
-void LxQtSysStatConfiguration::loadSettings()
+void LXQtSysStatConfiguration::loadSettings()
 {
     mLockSaving = true;
 
@@ -90,7 +90,7 @@ void LxQtSysStatConfiguration::loadSettings()
     mLockSaving = false;
 }
 
-void LxQtSysStatConfiguration::saveSettings()
+void LXQtSysStatConfiguration::saveSettings()
 {
     if (mLockSaving)
         return;
@@ -113,7 +113,7 @@ void LxQtSysStatConfiguration::saveSettings()
     mSettings->setValue("net/logarithmicScaleSteps", ui->logScaleSB->value());
 }
 
-void LxQtSysStatConfiguration::on_buttons_clicked(QAbstractButton *btn)
+void LXQtSysStatConfiguration::on_buttons_clicked(QAbstractButton *btn)
 {
     if (ui->buttons->buttonRole(btn) == QDialogButtonBox::ResetRole)
     {
@@ -124,7 +124,7 @@ void LxQtSysStatConfiguration::on_buttons_clicked(QAbstractButton *btn)
         close();
 }
 
-void LxQtSysStatConfiguration::on_typeCOB_currentIndexChanged(int index)
+void LXQtSysStatConfiguration::on_typeCOB_currentIndexChanged(int index)
 {
     if (mStat)
         mStat->deleteLater();
@@ -148,16 +148,16 @@ void LxQtSysStatConfiguration::on_typeCOB_currentIndexChanged(int index)
     ui->sourceCOB->setCurrentIndex(0);
 }
 
-void LxQtSysStatConfiguration::on_maximumHS_valueChanged(int value)
+void LXQtSysStatConfiguration::on_maximumHS_valueChanged(int value)
 {
     emit maximumNetSpeedChanged(PluginSysStat::netSpeedToString(value));
 
     saveSettings();
 }
 
-void LxQtSysStatConfiguration::coloursChanged()
+void LXQtSysStatConfiguration::coloursChanged()
 {
-    const LxQtSysStatColours::Colours &colours = mColoursDialog->colours();
+    const LXQtSysStatColours::Colours &colours = mColoursDialog->colours();
 
     mSettings->setValue("grid/colour",  colours["grid"].name());
     mSettings->setValue("title/colour", colours["title"].name());
@@ -177,17 +177,17 @@ void LxQtSysStatConfiguration::coloursChanged()
     mSettings->setValue("net/transmittedColour", colours["netTransmitted"].name());
 }
 
-void LxQtSysStatConfiguration::on_customColoursB_clicked()
+void LXQtSysStatConfiguration::on_customColoursB_clicked()
 {
     if (!mColoursDialog)
     {
-        mColoursDialog = new LxQtSysStatColours(this);
+        mColoursDialog = new LXQtSysStatColours(this);
         connect(mColoursDialog, SIGNAL(coloursChanged()), SLOT(coloursChanged()));
     }
 
-    LxQtSysStatColours::Colours colours;
+    LXQtSysStatColours::Colours colours;
 
-    const LxQtSysStatColours::Colours &defaultColours = mColoursDialog->defaultColours();
+    const LXQtSysStatColours::Colours &defaultColours = mColoursDialog->defaultColours();
 
     colours["grid"]  = QColor(mSettings->value("grid/colour",  defaultColours["grid"] .name()).toString());
     colours["title"] = QColor(mSettings->value("title/colour", defaultColours["title"].name()).toString());
